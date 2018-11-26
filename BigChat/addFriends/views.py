@@ -158,7 +158,14 @@ def friendController(request, requestType):
                  return {"error": "FriendRequests entry does not exist for one or both of the users in question."}
          elif requestType == "remove":
              # print ("Removing...")
+             cm1 = chatMember.objects.filter(member_id=[user_id,friend_id])
+             cm2 = chatMember.objects.filter(member_id=[friend_id,user_id])
 
+             for i in cm1:
+                 ChatList.objects.filter(chat_id="chat_table_"+str(i.id)).delete()
+
+             for i in cm2:
+                 ChatList.objects.filter(chat_id="chat_table_"+str(i.id)).delete()
              # TODO: remove chat history or keep it?
              removeFriend(contacts, friend_id)
              removeFriend(contactsFriend, user_id)
